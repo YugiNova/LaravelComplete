@@ -23,9 +23,31 @@ Route::get('/home',function () {
     return view('client.pages.home');
 })->name('client.home');
 
-Route::get('/admin',function () {
-    return view('admin.pages.dashboard');
-})->name('admin.dashboard')->middleware('isAdmin');
+Route::middleware('isAdmin')->name('admin.')->group(function() {
+    Route::get('admin',function () {
+        return view('admin.pages.dashboard');
+    })->name('dashboard');
+
+    Route::get('product',function () {
+        return view('admin.pages.product.list');
+    })->name('product');
+
+    Route::get('product/create',function () {
+        return view('admin.pages.product.create');
+    })->name('product.create');
+
+    Route::get('product_category',function () {
+        return view('admin.pages.product_category.list');
+    })->name('product_category');
+
+    Route::get('product_category/create',function () {
+        return view('admin.pages.product_category.create');
+    })->name('product_category.create');
+});
+
+// Route::get('/blog',function () {
+//     return view('admin.pages.blog');
+// })->name('admin.dashboard')->middleware('isAdmin');
 
 Route::get('/cocacola',function () {
     return 'COCACOLA';

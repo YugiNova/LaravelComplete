@@ -29,7 +29,7 @@
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
           <section class="col-lg-5 connectedSortable">
 
-            Product
+            <a href={{route('admin.product_category.create')}} type="button" class="btn btn-primary">Create product category</a>
           </section>
           <!-- right col -->
         </div>
