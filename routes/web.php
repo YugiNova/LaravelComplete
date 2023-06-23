@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,10 @@ Route::middleware('isAdmin')->name('admin.')->group(function() {
     Route::get('product_category/create',function () {
         return view('admin.pages.product_category.create');
     })->name('product_category.create');
+
+    Route::post('product_category/store',[ProductCategoryController::class, 'store'])->name('product_category.store');
+
+    Route::post('product_category/slug',[ProductCategoryController::class, 'getSlug'])->name('product_category.slug');
 });
 
 // Route::get('/blog',function () {

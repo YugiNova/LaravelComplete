@@ -11,24 +11,34 @@
                             <div class="card-header">
                                 <h3 class="card-title">Create Product Category</h3>
                             </div>
-                            <form>
+                            <form  method="POST" action={{ route('admin.product_category.store') }}>
+                                @csrf
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Name</label>
-                                        <input type="text" class="form-control" id="name" placeholder="Name">
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="Name">
+                                        @error('name')
+                                            <p style="color: red">{{$message}}</p>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Slug</label>
-                                        <input type="text" class="form-control" id="slug" placeholder="Slug">
+                                        <input type="text" class="form-control" name="slug" id="slug" placeholder="Slug">
+                                        @error('slug')
+                                            <p style="color: red">{{$message}}</p>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Status</label>
-                                        <select class="form-control">
-                                        <option>--- Please select ---</option>
-                                        <option value="1">Show</option>
-                                        <option value="0">Hide</option>
+                                        <select name="status" class="form-control">
+                                            <option value="2">--- Please select ---</option>
+                                            <option value="1">Show</option>
+                                            <option value="0">Hide</option>
                                         </select>
-                                        </div>
+                                        @error('status')
+                                            <p style="color: red">{{$message}}</p>
+                                        @enderror
+                                    </div>
                                 </div>
             
                                 <div class="card-footer">
@@ -46,4 +56,25 @@
         </div>
         
     </section>
+@endsection
+
+@section('js-custom')
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#name').on('keyup',function(){
+                let name =$(this).val();
+                $.ajax({
+                    method: "POST",
+                    url: "{{ route('admin.product_category.slug') }}",
+                    data: {
+                        name: name,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function (res) {
+                        $('#slug').val(res.slug);
+                    }
+                });
+            })
+        })
+    </script>
 @endsection
