@@ -37,15 +37,17 @@ Route::middleware('isAdmin')->name('admin.')->group(function() {
         return view('admin.pages.product.create');
     })->name('product.create');
 
-    Route::get('product_category',function () {
-        return view('admin.pages.product_category.list');
-    })->name('product_category');
+    Route::get('product_category',[ProductCategoryController::class, 'index'])->name('product_category');
 
     Route::get('product_category/create',function () {
         return view('admin.pages.product_category.create');
     })->name('product_category.create');
 
     Route::post('product_category/store',[ProductCategoryController::class, 'store'])->name('product_category.store');
+
+    Route::get('product_category/{id}', [ProductCategoryController::class,'detail'])->name('product_category.detail');
+
+    Route::post('product_category/update', [ProductCategoryController::class,'update'])->name('product_category.update');
 
     Route::post('product_category/slug',[ProductCategoryController::class, 'getSlug'])->name('product_category.slug');
 });
