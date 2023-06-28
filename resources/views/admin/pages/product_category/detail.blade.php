@@ -11,7 +11,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Create Product Category</h3>
                             </div>
-                            <form  method="POST" action={{ route('admin.product_category.update') }}>
+                            <form  method="POST" action={{ route('admin.product_category.update',['id'=>$productCategory->id]) }}>
                                 @csrf
                                 {{-- @dd($productCategory); --}}
                                 <div class="card-body">

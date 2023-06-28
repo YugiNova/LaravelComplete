@@ -47,7 +47,9 @@ Route::middleware('isAdmin')->name('admin.')->group(function() {
 
     Route::get('product_category/{id}', [ProductCategoryController::class,'detail'])->name('product_category.detail');
 
-    Route::post('product_category/update', [ProductCategoryController::class,'update'])->name('product_category.update');
+    Route::post('product_category/{id}', [ProductCategoryController::class,'update'])->name('product_category.update');
+
+    Route::post('product_category/delete/{id}', [ProductCategoryController::class,'destroy'])->name('product_category.delete');
 
     Route::post('product_category/slug',[ProductCategoryController::class, 'getSlug'])->name('product_category.slug');
 });

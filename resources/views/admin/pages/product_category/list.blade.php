@@ -86,8 +86,11 @@
                                                             </td>
                                                             <td>
                                                               <div class="row w-100">
-                                                                <a href={{ route('admin.product_category.detail',['id'=>$item->id]) }} class="btn btn-block btn-primary col-3 mr-5">Edit</a>
-                                                                <a type="submit" class="btn btn-block btn-danger col-3 mt-0">Delete</a>
+                                                                <form class="row w-100" method="POST" action="{{ route('admin.product_category.delete',['id'=>$item->id]) }}">
+                                                                    @csrf
+                                                                    <a href={{ route('admin.product_category.detail',['id'=>$item->id]) }} class="btn btn-block btn-primary col-3 mr-5">Edit</a>
+                                                                    <button type="submit" class="btn btn-block btn-danger col-3 mt-0">Delete</button>
+                                                                </form>
                                                               </div>
                                                             </td>
                                                         </tr>
@@ -108,10 +111,14 @@
                                                         id="example2_previous"><a href="#" aria-controls="example2"
                                                             data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
                                                     </li>
-                                                    <li class="paginate_button page-item active"><a href="#"
+                                                    {{-- @for($page = 1;$page <= $numberOfPage; $page++)
+                                                        <li class="paginate_button page-item"><a href="?page={{ $page }}"
                                                             aria-controls="example2" data-dt-idx="1" tabindex="0"
-                                                            class="page-link">1</a></li>
-                                                    <li class="paginate_button page-item "><a href="#"
+                                                            class="page-link">{{ $page }}</a></li>
+                                                    @endfor --}}
+                                                    {{ $productCategory->links() }}
+                                                    
+                                                    {{-- <li class="paginate_button page-item "><a href="#"
                                                             aria-controls="example2" data-dt-idx="2" tabindex="0"
                                                             class="page-link">2</a></li>
                                                     <li class="paginate_button page-item "><a href="#"
@@ -125,7 +132,7 @@
                                                             class="page-link">5</a></li>
                                                     <li class="paginate_button page-item "><a href="#"
                                                             aria-controls="example2" data-dt-idx="6" tabindex="0"
-                                                            class="page-link">6</a></li>
+                                                            class="page-link">6</a></li> --}}
                                                     <li class="paginate_button page-item next" id="example2_next"><a
                                                             href="#" aria-controls="example2" data-dt-idx="7"
                                                             tabindex="0" class="page-link">Next</a></li>
