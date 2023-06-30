@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ProductCategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
@@ -29,14 +30,11 @@ Route::middleware('isAdmin')->name('admin.')->group(function() {
         return view('admin.pages.dashboard');
     })->name('dashboard');
 
-    Route::get('product',function () {
-        return view('admin.pages.product.list');
-    })->name('product');
+    //Product
+    Route::resource('admin/product',ProductController::class);
 
-    Route::get('product/create',function () {
-        return view('admin.pages.product.create');
-    })->name('product.create');
 
+    //Product Category
     Route::get('product_category',[ProductCategoryController::class, 'index'])->name('product_category');
 
     Route::get('product_category/create',function () {
@@ -47,11 +45,11 @@ Route::middleware('isAdmin')->name('admin.')->group(function() {
 
     Route::get('product_category/{id}', [ProductCategoryController::class,'detail'])->name('product_category.detail');
 
+    Route::post('product_category/slug',[ProductCategoryController::class, 'getSlug'])->name('product_category.slug');
+
     Route::post('product_category/{id}', [ProductCategoryController::class,'update'])->name('product_category.update');
 
     Route::post('product_category/delete/{id}', [ProductCategoryController::class,'destroy'])->name('product_category.delete');
-
-    Route::post('product_category/slug',[ProductCategoryController::class, 'getSlug'])->name('product_category.slug');
 });
 
 // Route::get('/blog',function () {

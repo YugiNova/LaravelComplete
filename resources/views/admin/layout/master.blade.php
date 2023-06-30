@@ -72,6 +72,9 @@
 <script src={{ asset("backend/dist/js/pages/dashboard.js") }}></script>
 <!-- AdminLTE for demo purposes -->
 <script src={{ asset("backend/dist/js/demo.js") }}></script>
+<!-- CKEditor -->
+<script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/classic/ckeditor.js"></script>
+
 @yield('js-custom');
 </body>
 </html>

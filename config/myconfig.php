@@ -1,5 +1,5 @@
 <?php 
     return [
-        'item_per_page' => [env('ITEM_PER_PAGE'),2]
+        'item_per_page' => [env('ITEMS_PER_PAGE'),2]
     ]
 ?>
