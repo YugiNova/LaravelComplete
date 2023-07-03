@@ -68,15 +68,15 @@
                                               <th class="sorting" tabindex="0" aria-controls="example2"
                                               rowspan="1" colspan="1"
                                               aria-label="Platform(s): activate to sort column ascending">
-                                              Discount</th>
+                                              Description</th>
                                               <th class="sorting" tabindex="0" aria-controls="example2"
                                               rowspan="1" colspan="1"
                                               aria-label="Platform(s): activate to sort column ascending">
-                                              Quantity</th>
+                                              Category</th>
                                               <th class="sorting" tabindex="0" aria-controls="example2"
                                               rowspan="1" colspan="1"
                                               aria-label="Platform(s): activate to sort column ascending">
-                                              Slug</th>
+                                              Image</th>
                                           <th class="sorting" tabindex="0" aria-controls="example2"
                                               rowspan="1" colspan="1"
                                               aria-label="Engine version: activate to sort column ascending">
@@ -93,6 +93,16 @@
                                               <td class="sorting_1 dtr-control">{{ $loop->iteration }}</td>
                                               <td>{{ $item->name }}</td>
                                               <td>{{ $item->slug }}</td>
+                                              <td>{{ $item->price }}</td>
+                                              <td>{!! $item->description !!}</td>
+                                              <td>{{ $item->category->name }}</td>
+                                              <td>{{ $item->slug }}</td>
+                                              <td>
+                                                @php
+                                                    $imageName = ($item->image_url == 'empty' || !file_exists('image/'.$item->image_url)) ? 'default_image.png' : $item->image_url
+                                                @endphp
+                                                <img src="{{ asset('images/'.$imageName) }}" width="100px" height="100px"/>
+                                                </td>
                                               <td>
                                                   @if ($item->status)
                                                       <span class="badge bg-success ">Show</span>
@@ -101,13 +111,12 @@
                                                   @endif
                                               </td>
                                               <td>
-                                                <div class="row w-100">
-                                                  <form class="row w-100" method="POST" action="{{ route('admin.product_category.delete',['id'=>$item->id]) }}">
+                                                  <form class="row col-12 mr-0" method="POST" action="{{ route('admin.product.destroy',['product'=>$item->id]) }}">
                                                       @csrf
-                                                      <a href={{ route('admin.product_category.detail',['id'=>$item->id]) }} class="btn btn-block btn-primary col-3 mr-5">Edit</a>
-                                                      <button type="submit" class="btn btn-block btn-danger col-3 mt-0">Delete</button>
+                                                      <a href={{ route('admin.product.show',['product'=>$item->id]) }} class="btn btn-block btn-primary col-5">Edit</a>
+                                                      <div class="col-2"></div>
+                                                      <button type="submit" class="btn btn-block btn-danger col-5 mt-0">Delete</button>
                                                   </form>
-                                                </div>
                                               </td>
                                           </tr>
                                       @endforeach

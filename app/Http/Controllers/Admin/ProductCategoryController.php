@@ -56,7 +56,7 @@ class ProductCategoryController extends Controller
 
         // $productCategory = DB::select('SELECT * FROM product_category limit ?,?',[$offset,$itemPerPage]);
         // return view('admin.pages.product_category.list', compact('productCategory','numberOfPage'));
-        $productCategory = DB::table('product_category')->paginate(2);
+        $productCategory = DB::table('product_category')->paginate(5);
         return view('admin.pages.product_category.list', compact('productCategory'));
     }
 
