@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateProductCategoryRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -66,22 +67,7 @@ class ProductCategoryController extends Controller
         return view('admin.pages.product_category.detail', ['productCategory'=>$productCategory]);
     }
 
-    public function update (Request $request, $id) {
-        $request->validate(
-            [
-                'name' => 'required|min:3|string|unique:product_category,name,'.$id,
-                //'slug' => 'required|min:3|string',
-                'status' => 'required|boolean',
-            ],
-            [
-                'name.required' => 'Name is required',
-                'name.min' => 'Name have to least 3 character',
-                'slug.required' => 'Slug is required',
-                //'slug.min' => 'Slug have to least 3 character', 
-                'status.required' => 'Status is required',
-                'status.boolean' => 'Status is required',
-            ],
-        );
+    public function update (UpdateProductCategoryRequest $request, $id) {
 
         // $check = DB::update('UPDATE product_category set name = ?, slug = ?, status = ?  where id = ?',[$request->name,$request->slug,$request->status,$id]);
         $check = DB::table('product_category')->where(['id'=>$id])

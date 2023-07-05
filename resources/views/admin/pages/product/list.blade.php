@@ -30,9 +30,14 @@
           <section class="col-lg-12 connectedSortable">
             <a href={{route('admin.product.create')}} type="button" class="btn btn-primary">Create product</a>
             <div class="card mt-3">
-              {{-- <div class="card-header">
-                  <h3 class="card-title">DataTable with minimal features &amp; hover style</h3>
-              </div> --}}
+              <div class="card-header">
+                <div class="col-4">
+                    <form class="row" method="GET" action="">
+                        <input name="keyword" type="text" class="form-control col-10" placeholder="Search...">
+                        <button type="submit" class="btn btn-block btn-primary col-2">Search</button>
+                      </form>
+                </div>
+              </div>
 
               <div class="card-body">
                   <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -99,7 +104,7 @@
                                               <td>{{ $item->slug }}</td>
                                               <td>
                                                 @php
-                                                    $imageName = ($item->image_url == 'empty' || !file_exists('image/'.$item->image_url)) ? 'default_image.png' : $item->image_url
+                                                    $imageName = ($item->image_url == 'empty' || !file_exists('images/'.$item->image_url)) ? 'default_image.png' : $item->image_url
                                                 @endphp
                                                 <img src="{{ asset('images/'.$imageName) }}" width="100px" height="100px"/>
                                                 </td>
@@ -113,9 +118,10 @@
                                               <td>
                                                   <form class="row col-12 mr-0" method="POST" action="{{ route('admin.product.destroy',['product'=>$item->id]) }}">
                                                       @csrf
-                                                      <a href={{ route('admin.product.show',['product'=>$item->id]) }} class="btn btn-block btn-primary col-5">Edit</a>
+                                                      @method('delete')
+                                                      <a  href={{ route('admin.product.show',['product'=>$item->id]) }} class="btn btn-block btn-primary col-5">Edit</a>
                                                       <div class="col-2"></div>
-                                                      <button type="submit" class="btn btn-block btn-danger col-5 mt-0">Delete</button>
+                                                      <button onclick="return alert('Are you sure?')" type="submit" class="btn btn-block btn-danger col-5 mt-0">Delete</button>
                                                   </form>
                                               </td>
                                           </tr>
@@ -141,7 +147,7 @@
                                               aria-controls="example2" data-dt-idx="1" tabindex="0"
                                               class="page-link">{{ $page }}</a></li>
                                       @endfor --}}
-                                      {{ $product->links() }}
+                                      {{ $product->appends(request()->query())->links() }}
                                       
                                       {{-- <li class="paginate_button page-item "><a href="#"
                                               aria-controls="example2" data-dt-idx="2" tabindex="0"
