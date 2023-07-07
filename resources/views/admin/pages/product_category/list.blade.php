@@ -65,6 +65,10 @@
                                                             rowspan="1" colspan="1"
                                                             aria-label="Engine version: activate to sort column ascending">
                                                             Status</th>
+                                                            <th class="sorting" tabindex="0" aria-controls="example2"
+                                                            rowspan="1" colspan="1"
+                                                            aria-label="Engine version: activate to sort column ascending">
+                                                            Products Count</th>
                                                         <th class="sorting" tabindex="0" aria-controls="example2"
                                                             rowspan="1" colspan="1"
                                                             aria-label="Engine version: activate to sort column ascending">
@@ -84,6 +88,7 @@
                                                                     <span class="badge bg-danger">Hide</span>
                                                                 @endif
                                                             </td>
+                                                            <td>{{ $item->products->count() }}</td>
                                                             <td>
                                                               <div class="row w-100">
                                                                 <form class="row w-100" method="POST" action="{{ route('admin.product_category.delete',['id'=>$item->id]) }}">

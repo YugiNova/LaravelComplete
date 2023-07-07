@@ -31,11 +31,30 @@
             <a href={{route('admin.product.create')}} type="button" class="btn btn-primary">Create product</a>
             <div class="card mt-3">
               <div class="card-header">
-                <div class="col-4">
+                <div class="col-8">
                     <form class="row" method="GET" action="">
-                        <input name="keyword" type="text" class="form-control col-10" placeholder="Search...">
+                        <input name="keyword" type="text" class="form-control col-6" placeholder="Search...">
+                        <select name="status" class="form-control col-2">
+                            <option value="">--- please select ---</option>
+                            <option value="1">show</option>
+                            <option value="0">hide</option>
+                        </select>
+                        <select name="sort" class="form-control col-2">
+                            <option value="0">Lasted</option>
+                            <option value="1">Price Low to High</option>
+                            <option value="2">Price High to Low</option>
+                        </select>
                         <button type="submit" class="btn btn-block btn-primary col-2">Search</button>
-                      </form>
+                        <div class="col-12">
+                            <p class="mb-0">
+                                <label for="amount">Price range:</label>
+                                <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                                <input type="hidden" id="amount_start" name="amount_start"/>
+                                <input type="hidden" id="amount_end" name="amount_end"/>
+                            </p> 
+                              <div id="slider-range"></div>
+                        </div>
+                    </form>
                 </div>
               </div>
 
@@ -185,4 +204,26 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+@endsection
+
+@section('js-custom')
+<script>
+    $(document).ready(  
+        function() {
+      $( "#slider-range" ).slider({
+        range: true,
+        min: 0,
+        max: {{$maxPrice}},
+        values: [ {{ request()->amount_start ?? 0 }}, {{ request()->amount_end ?? 30 }} ],
+        slide: function( event, ui ) {
+          $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+          $( "#amount_start" ).val(ui.values[ 0 ]);
+          $( "#amount_end" ).val( ui.values[ 1 ] );
+        }
+      });
+      $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+        " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+    } );
+    
+</script>
 @endsection

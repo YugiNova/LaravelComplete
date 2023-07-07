@@ -22,14 +22,39 @@ class ProductController extends Controller
         //    ->paginate(10);
         
         $product = Product::query();
-
+        $filter = [];
+        
         if ($request->keyword) {
-            
-            $product = $product->where('name','like','%'.$request->keyword.'%');
+            $filter[] = ['name','like','%'.$request->keyword.'%'];
+        }
+        if($request->status != ""){
+            $filter[] = ['status',$request->status];
+        }
+        if($request->amount_start && $request->amount_end){
+            // $filter[] = ['price','>=',$request->amount_start];
+            // $filter[] = ['price','<=',$request->amount_end];
+            $product = $product->whereBetween('price',[$request->amount_start,$request->amount_end]);
+        }
+        if($request->sort){
+            $sortBy = ['id', 'desc'];
+            switch($request->sort){
+                case 1:
+                    $sortBy = ['price','asc'];
+                    break;
+                case 2:
+                    $sortBy = ['price','desc'];
+                    break;
+                default: 
+                    $sortBy = ['id', 'desc'];
+                    break;
+            }
+            $product = $product->orderBy($sortBy[0],$sortBy[1]);
         }
 
-        $product = Product::paginate(2);
-        return view('admin.pages.product.list', compact('product'));
+        $product = $product->where($filter)->paginate(5);
+        // dd($product->toSql(),$product->getBindings());  
+        $maxPrice = Product::max('price');
+        return view('admin.pages.product.list', compact('product','maxPrice'));
     }
 
     /**
