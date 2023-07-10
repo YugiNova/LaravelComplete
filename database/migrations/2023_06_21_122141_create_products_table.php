@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('image_url',255);
             $table->integer('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

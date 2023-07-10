@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -15,43 +16,48 @@ class ProductController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        //Query Builder
-        //    $product = DB::table('products')->join('product_category','products.product_category_id','=','product_category.id')
-        //    ->select('products.*','product_category.name as product_category_name')
-        //    ->paginate(10);
-        
-        $product = Product::query();
-        $filter = [];
-        
-        if ($request->keyword) {
-            $filter[] = ['name','like','%'.$request->keyword.'%'];
-        }
-        if($request->status != ""){
-            $filter[] = ['status',$request->status];
-        }
-        if($request->amount_start && $request->amount_end){
-            // $filter[] = ['price','>=',$request->amount_start];
-            // $filter[] = ['price','<=',$request->amount_end];
-            $product = $product->whereBetween('price',[$request->amount_start,$request->amount_end]);
-        }
-        if($request->sort){
-            $sortBy = ['id', 'desc'];
-            switch($request->sort){
-                case 1:
-                    $sortBy = ['price','asc'];
-                    break;
-                case 2:
-                    $sortBy = ['price','desc'];
-                    break;
-                default: 
-                    $sortBy = ['id', 'desc'];
-                    break;
-            }
-            $product = $product->orderBy($sortBy[0],$sortBy[1]);
-        }
+    {   
+        $pipelines = [
+            \App\Filters\ByKeyword::class,
+            \App\Filters\ByStatus::class,
+            \App\Filters\ByMinMax::class,
+        ];
 
-        $product = $product->where($filter)->paginate(5);
+        $pipeline = Pipeline::send(Product::query())
+        ->through($pipelines)
+        ->thenReturn();
+
+        // $product = Product::query();
+        // $filter = [];
+        
+        // if ($request->keyword) {
+        //     $filter[] = ['name','like','%'.$request->keyword.'%'];
+        // }
+        // if($request->status != ""){
+        //     $filter[] = ['status',$request->status];
+        // }
+        // if($request->amount_start && $request->amount_end){
+        //     // $filter[] = ['price','>=',$request->amount_start];
+        //     // $filter[] = ['price','<=',$request->amount_end];
+        //     $product = $product->whereBetween('price',[$request->amount_start,$request->amount_end]);
+        // }
+        // if($request->sort){
+        //     $sortBy = ['id', 'desc'];
+        //     switch($request->sort){
+        //         case 1:
+        //             $sortBy = ['price','asc'];
+        //             break;
+        //         case 2:
+        //             $sortBy = ['price','desc'];
+        //             break;
+        //         default: 
+        //             $sortBy = ['id', 'desc'];
+        //             break;
+        //     }
+        //     $product = $product->orderBy($sortBy[0],$sortBy[1]);
+        // }
+
+        $product = $pipeline->paginate(5);
         // dd($product->toSql(),$product->getBindings());  
         $maxPrice = Product::max('price');
         return view('admin.pages.product.list', compact('product','maxPrice'));
@@ -144,7 +150,18 @@ class ProductController extends Controller
         //
         //$product = Product::find($id);
         $check = $product->delete();
+        if($check){
+            toastr()->success("Delete product successfull");
+        }
+        
+        return redirect()->route('admin.product.index');
+    }
 
+    public function restore(string $product){
+        $products = Product::withTrashed()->find($product);
+        // $products->deleted_at = null;
+        // $products->save();
+        $products->restore();
         return redirect()->route('admin.product.index');
     }
 }

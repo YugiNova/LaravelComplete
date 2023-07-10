@@ -35,7 +35,7 @@ class ProductFactory extends Factory
             'description'=> fake()->text,
             'information'=> fake()->text,
             'image_url'=> 'empty',
-            'status' => fake()->numberBetween(10,1000)
+            'status' => fake()->numberBetween(0,1)
         ];
     }
 }

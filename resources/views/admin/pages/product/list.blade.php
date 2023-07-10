@@ -135,13 +135,20 @@
                                                   @endif
                                               </td>
                                               <td>
-                                                  <form class="row col-12 mr-0" method="POST" action="{{ route('admin.product.destroy',['product'=>$item->id]) }}">
+                                                <div class="row">
+                                                <a  href={{ route('admin.product.show',['product'=>$item->id]) }} class="btn btn-block btn-primary col-12">Edit</a>
+                                                  <form class="row col-12" method="POST" action="{{ route('admin.product.destroy',['product'=>$item->id]) }}">
                                                       @csrf
                                                       @method('delete')
-                                                      <a  href={{ route('admin.product.show',['product'=>$item->id]) }} class="btn btn-block btn-primary col-5">Edit</a>
+                                                     
                                                       <div class="col-2"></div>
-                                                      <button onclick="return alert('Are you sure?')" type="submit" class="btn btn-block btn-danger col-5 mt-0">Delete</button>
+                                                      <button onclick="return alert('Are you sure?')" type="submit" class="btn btn-block btn-danger col-12 mt-0">Delete</button>
                                                   </form>
+                                                  <form action="" method="POST" class="col-12">
+                                                    @csrf
+                                                    <button onclick="return alert('Are you sure?')" type="submit" class="btn btn-block btn-danger col-12 mt-0">Restore</button>
+                                                  </form>
+                                                </div>
                                               </td>
                                           </tr>
                                       @endforeach
