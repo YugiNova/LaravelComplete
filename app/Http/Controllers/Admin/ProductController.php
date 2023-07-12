@@ -21,9 +21,10 @@ class ProductController extends Controller
             \App\Filters\ByKeyword::class,
             \App\Filters\ByStatus::class,
             \App\Filters\ByMinMax::class,
+            \App\Filters\Sort::class
         ];
 
-        $pipeline = Pipeline::send(Product::query())
+        $pipeline = Pipeline::send(Product::query()->withTrashed())
         ->through($pipelines)
         ->thenReturn();
 

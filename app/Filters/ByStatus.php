@@ -5,13 +5,11 @@
         public function handle($request,\Closure $next)
         {
             $builder = $next($request);
+            $query = request()->query('status');
             // dd(request()->query('status'));
-            if(request()->query('status')){
-                $builder = $builder->where('status',request()->query('status'));
-                
-                return $builder;
+            if($query != null){
+                return $builder->where('status',$query);
             }
-            
             return $builder;
         }
     }

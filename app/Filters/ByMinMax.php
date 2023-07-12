@@ -5,8 +5,11 @@
         public function handle($request,\Closure $next)
         {
             $builder = $next($request);
-            if(request()->query('amount_start') && request()->query('amount_end')){
-                return $builder->whereBetween('price',[request()->query('amount_start'),request()->query('amount_end')]);
+            $query = [request()->query('amount_start'),request()->query('amount_end')];
+            
+            if($query[0] != null && $query[1] != null){
+                // dd($query);
+                return $builder->whereBetween('price',$query);
             }
             return $builder;
         }

@@ -32,7 +32,7 @@ Route::middleware('isAdmin')->name('admin.')->group(function() {
 
     //Product
     Route::resource('admin/product',ProductController::class);
-
+    Route::post('admin/product/restore/{product}',[ProductController::class,'restore'])->name('product.restore');
 
     //Product Category
     Route::get('product_category',[ProductCategoryController::class, 'index'])->name('product_category');
