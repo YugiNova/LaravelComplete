@@ -58,7 +58,7 @@ class ProductController extends Controller
         //     $product = $product->orderBy($sortBy[0],$sortBy[1]);
         // }
 
-        $product = $pipeline->paginate(5);
+        $product = $pipeline->paginate(100);
         // dd($product->toSql(),$product->getBindings());  
         $maxPrice = Product::max('price');
         return view('admin.pages.product.list', compact('product','maxPrice'));

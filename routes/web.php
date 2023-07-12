@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Client\DetailController;
+use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
@@ -20,10 +22,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+//Home page
+Route::get('/home',[HomeController::class,'index'])->name('client.home');
 
-Route::get('/home',function () {
-    return view('client.pages.home');
-})->name('client.home');
+//Detail page
+Route::get('/product/{slug}',[DetailController::class,'index'])->name('client.product.detail');
 
 Route::middleware('isAdmin')->name('admin.')->group(function() {
     Route::get('admin',function () {

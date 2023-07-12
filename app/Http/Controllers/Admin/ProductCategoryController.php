@@ -86,7 +86,8 @@ class ProductCategoryController extends Controller
     }
 
     public function destroy ($id) {
-        $check = DB::delete('DELETE FROM product_category WHERE id = ?',[$id]);
+        // $check = DB::delete('DELETE FROM product_category WHERE id = ?',[$id]);
+        $check = ProductCategory::withTrashed()->find($id)->delete();
         $msg = $check? "Delete product category successfull" : "Delete product category fail";
             
         toastr()->success($msg);
