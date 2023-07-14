@@ -11,9 +11,9 @@ class DetailController extends Controller
 {
     public function index(string $slug){
         $product = Product::where('slug',$slug)->first();
-        $categories = ProductCategory::latest()->take(8)->get()->filter(function($categories){
-            return $categories->products->count();
-        });
-        return view('client.pages.shop_details',compact('product','categories'));
+        // $categories = ProductCategory::latest()->take(8)->get()->filter(function($categories){
+        //     return $categories->products->count();
+        // });
+        return view('client.pages.shop_details',compact('product'));
     }
 }

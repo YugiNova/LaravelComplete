@@ -12,9 +12,9 @@ class HomeController extends Controller
 {
     public function index() {
         $products = Product::latest()->take(8)->get();
-        $categories = ProductCategory::latest()->take(8)->get()->filter(function($categories){
-            return $categories->products->count();
-        });
-        return view('client.pages.home',compact('products','categories'));
+        // $categories = ProductCategory::latest()->take(8)->get()->filter(function($categories){
+        //     return $categories->products->count();
+        // });
+        return view('client.pages.home',compact('products'));
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\DetailController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -27,6 +28,10 @@ Route::get('/home',[HomeController::class,'index'])->name('client.home');
 
 //Detail page
 Route::get('/product/{slug}',[DetailController::class,'index'])->name('client.product.detail');
+
+//Cart
+Route::get('/product/add-to-cart/{product}',[CartController::class,'addProductToCart'])->name('client.product.addToCart');
+Route::get('/cart',[CartController::class,'showCart'])->name('client.product.showCart');
 
 Route::middleware('isAdmin')->name('admin.')->group(function() {
     Route::get('admin',function () {
