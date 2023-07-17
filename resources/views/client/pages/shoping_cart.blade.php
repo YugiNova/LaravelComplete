@@ -38,16 +38,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+                                @php
+                                    $subtotal = 0;
+                                    $total = 0;
+                                @endphp
                                 @foreach($cart as $cartItem)
-                                    @dd($cartItem)
+                                    @php
+                                        $cartItemTotal = $cartItem['price'] *  $cartItem['qty'];
+                                        $subtotal += $cartItemTotal;
+                                        $total += $cartItemTotal;
+                                    @endphp
                                     <tr>
                                         <td class="shoping__cart__item">
                                             <img src="img/cart/cart-1.jpg" alt="">
                                             <h5>{{ $cartItem['name'] }}</h5>
                                         </td>
                                         <td class="shoping__cart__price">
-                                            {{ $cartItem['name'] }}
+                                            ${{ number_format($cartItem['price']) }}
                                         </td>
                                         <td class="shoping__cart__quantity">
                                             <div class="quantity">
@@ -57,7 +64,7 @@
                                             </div>
                                         </td>
                                         <td class="shoping__cart__total">
-                                            $110.00
+                                            ${{ number_format($cartItemTotal) }}
                                         </td>
                                         <td class="shoping__cart__item__close">
                                             <span class="icon_close"></span>
@@ -92,8 +99,8 @@
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Subtotal <span>$454.98</span></li>
-                            <li>Total <span>$454.98</span></li>
+                            <li>Subtotal <span>${{ number_format($subtotal) }}</span></li>
+                            <li>Total <span>${{ number_format($total) }}</span></li>
                         </ul>
                         <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>
