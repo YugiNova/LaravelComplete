@@ -78,7 +78,7 @@
                                 <ul class="featured__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                    <li><a class="addToCart" data-url="{{ route('client.product.addToCart',['product'=>$product->id]) }}" href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                    <li><a class="addToCart" data-url="{{ route('cart.addToCart',['product'=>$product->id]) }}" href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                 </ul>
                             </div>
                             <div class="featured__item__text">
@@ -393,6 +393,9 @@
                             title: 'Congratulations',
                             text: 'Add product to cart success',
                         })
+                        
+                        $('#totalProduct').text(res.totalProduct)
+                        $('#totalPrice').text("$"+res.totalPrice)
                     }
                 })
            })

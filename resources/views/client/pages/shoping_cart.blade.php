@@ -42,7 +42,7 @@
                                     $subtotal = 0;
                                     $total = 0;
                                 @endphp
-                                @foreach($cart as $cartItem)
+                                @foreach($cart as $key => $cartItem)
                                     @php
                                         $cartItemTotal = $cartItem['price'] *  $cartItem['qty'];
                                         $subtotal += $cartItemTotal;
@@ -66,7 +66,7 @@
                                         <td class="shoping__cart__total">
                                             ${{ number_format($cartItemTotal) }}
                                         </td>
-                                        <td class="shoping__cart__item__close">
+                                        <td data-id="{{ $key }}" class="shoping__cart__item__close delete">
                                             <span class="icon_close"></span>
                                         </td>
                                     </tr>
@@ -109,4 +109,15 @@
         </div>
     </section>
     <!-- Shoping Cart Section End -->
+@endsection
+
+@section('js-custom')
+    <script>
+        $(document).ready(function(){
+            $('.delete').on('click',function(e){
+                $productId= $(this).data('id')
+                
+            })
+        })
+    </script>
 @endsection

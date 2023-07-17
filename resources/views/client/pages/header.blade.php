@@ -7,7 +7,7 @@
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span id="totalProduct">3</span></a></li>
             </ul>
             <div class="header__cart__price">item: <span>$150.00</span></div>
         </div>
@@ -123,10 +123,23 @@
                 <div class="col-lg-3">
                     <div class="header__cart">
                         <ul>
+                            @php
+                                $cart = session()->get('cart');
+                                $totalPrice = 0;
+                                $totalProduct = 0;
+                                if ($cart) {
+                                    $totalProduct = count($cart);
+                                    foreach ($cart as $item) {
+                                        $totalPrice += $item['qty'] * $item['price'];
+                                    }
+                                }
+                            @endphp
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span
+                                        id="totalProduct">{{ $totalProduct}}</span></a>
+                            </li>
                         </ul>
-                        <div class="header__cart__price">item: <span>$150.00</span></div>
+                        <div class="header__cart__price">item: <span id="totalPrice">${{ $totalPrice }}</span></div>
                     </div>
                 </div>
             </div>
@@ -148,7 +161,7 @@
                             <span>All departments</span>
                         </div>
                         <ul>
-                            @foreach($categories as $category)
+                            @foreach ($categories as $category)
                                 <li><a href="#">{{ $category->name }}</a></li>
                             @endforeach
                         </ul>

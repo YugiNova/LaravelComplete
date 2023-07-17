@@ -29,9 +29,9 @@ Route::get('/home',[HomeController::class,'index'])->name('client.home');
 //Detail page
 Route::get('/product/{slug}',[DetailController::class,'index'])->name('client.product.detail');
 
-//Cart
-Route::get('/product/add-to-cart/{product}',[CartController::class,'addProductToCart'])->name('client.product.addToCart');
-Route::get('/cart',[CartController::class,'showCart'])->name('client.product.showCart');
+// //Cart
+// Route::get('/product/add-to-cart/{product}/{qty?}',[CartController::class,'addProductToCart'])->name('client.product.addToCart');
+// Route::get('/cart',[CartController::class,'showCart'])->name('client.product.showCart');
 
 Route::middleware('isAdmin')->name('admin.')->group(function() {
     Route::get('admin',function () {
@@ -83,4 +83,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__.'/cart/web.php';

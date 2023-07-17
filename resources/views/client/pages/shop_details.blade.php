@@ -58,11 +58,11 @@
                         <div class="product__details__quantity">
                             <div class="quantity">
                                 <div class="pro-qty">
-                                    <input type="text" value="1">
+                                    <input id="qty" type="text" value="1">
                                 </div>
                             </div>
                         </div>
-                        <a href="#" class="primary-btn">ADD TO CARD</a>
+                        <a href="#" data-url="{{ route('cart.addToCart',['product'=>$product->id]) }}" id='addToCart' class="primary-btn">ADD TO CARD</a>
                         <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         <ul>
                             <li><b>Availability</b> <span>{{ $product->qty == 0 ? 'Out of stock' : 'In stock' }}</span></li>
@@ -222,4 +222,31 @@
         </div>
     </section>
     <!-- Related Product Section End -->
+@endsection
+
+@section('js-custom')
+    <script>
+        $(document).ready(function(){
+           $('#addToCart').on('click',function(event){
+                event.preventDefault();
+                let url = $(this).data('url');
+                let qty = $('#qty').val();
+                let trueUrl = url + '/' + qty
+                // alert(trueUrl);
+                $.ajax({
+                    method: 'GET',
+                    url: trueUrl,
+                    success: function(res){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Congratulations',
+                            text: 'Add product to cart success',
+                        })
+                        $('#totalProduct').text(res.totalProduct)
+                        $('#totalPrice').text("$"+res.totalPrice)
+                    }
+                })
+           })
+        })
+    </script>
 @endsection
