@@ -19,7 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('cart')->name('cart.')->group(function(){
     Route::get('/',[CartController::class,'showCart'])->name('showCart');
     Route::get('/product/add-to-cart/{product}/{qty?}',[CartController::class,'addProductToCart'])->name('addToCart');
-    Route::get('/product/add-to-cart/{product}',[CartController::class,'deleteProductToCart'])->name('deleteCartItem');
+    Route::get('/product/delete-cart-item/{product}',[CartController::class,'deleteCartItem'])->name('deleteCartItem');
+    Route::get('/product/update-cart-item/{product}/{qty?}',[CartController::class,'updateCartItem'])->name('updateCartItem');
+    Route::get('/delete-cart',[CartController::class,'deleteCart'])->name('deleteCart');
 })
 
 ?>
