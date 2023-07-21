@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\OrderPaymentMethod;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -84,5 +88,38 @@ class CartController extends Controller
     public function deleteCart(){
         session()->put('cart',[]);
         return response()->json(['message'=>'Delete cart successfull']);
+    }
+
+    public function placeOrder(Request $request){
+        $cart = session()->get('cart');
+
+        $totalPrice = 0;
+        foreach ($cart as $item) {
+            $totalPrice += $item['qty'] * $item['price'];
+        }
+
+        $order = Order::create([
+            'user_id'=>Auth::user()->id,
+            'address'=>$request->address,
+            'city'=>$request->city,
+            'note'=>$request->note,
+            'status'=>'pending',
+            'payment_method'=>$request->payment_method,
+            'subtotal'=>$request->$totalPrice,
+            'total'=>$request->$totalPrice
+        ]);
+
+        $orderPaymentMethod = OrderPaymentMethod::create([
+            'order_id'=>$order->id,
+            'payment_provider'=>$request->payment_method,
+            'total_balance'=>$totalPrice,
+            'status'=>'pending'
+        ]);
+
+        foreach ($cart as $item) {
+            $cartItem = OrderItem::create([
+                
+            ]);
+        }
     }
 }

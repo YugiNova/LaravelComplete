@@ -69,20 +69,24 @@
                 </div>
             </div>
             <div class="row featured__filter">
-                
+
                 @foreach ($products as $product)
-        
                     <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
                         <div class="featured__item">
-                            <div class="featured__item__pic set-bg" data-setbg="{{ $product->image_url == 'empty' ? asset('images/default_image.png') : asset('images/' . $product->image_url)}}">
+                            <div class="featured__item__pic set-bg"
+                                data-setbg="{{ $product->image_url == 'empty' ? asset('images/default_image.png') : asset('images/' . $product->image_url) }}">
                                 <ul class="featured__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                    <li><a class="addToCart" data-url="{{ route('cart.addToCart',['product'=>$product->id]) }}" href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                    <li><a class="addToCart"
+                                            data-url="{{ route('cart.addToCart', ['product' => $product->id]) }}"
+                                            href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                 </ul>
                             </div>
                             <div class="featured__item__text">
-                                <h6><a href="{{ route('client.product.detail',['slug'=>$product->slug]) }}">{{ $product->name }}</a></h6>
+                                <h6><a
+                                        href="{{ route('client.product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
+                                </h6>
                                 <h5>${{ $product->price }}</h5>
                             </div>
                         </div>
@@ -380,25 +384,30 @@
 
 @section('js-custom')
     <script>
-        $(document).ready(function(){
-           $('.addToCart').on('click',function(event){
+        $(document).ready(function() {
+            $('.addToCart').on('click', function(event) {
                 event.preventDefault();
                 let url = $(this).data('url');
                 $.ajax({
                     method: 'GET',
                     url: url,
-                    success: function(res){
+                    success: function(res) {
                         Swal.fire({
                             icon: 'success',
                             title: 'Congratulations',
                             text: 'Add product to cart success',
                         })
-                        
+
                         $('#totalProduct').text(res.totalProduct)
-                        $('#totalPrice').text("$"+res.totalPrice)
-                    }
+                        $('#totalPrice').text("$" + res.totalPrice)
+                    },
+                    // statusCode: {
+                    //     401: function() {
+                    //         window.location.href = {{ route('login') }}
+                    //     }
+                    // }
                 })
-           })
+            })
         })
     </script>
 @endsection
