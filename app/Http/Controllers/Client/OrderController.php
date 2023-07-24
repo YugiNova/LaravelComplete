@@ -11,4 +11,5 @@ class OrderController extends Controller
         $cart = session()->get('cart') ?? [];
         return view('client.pages.checkout', compact('cart'));
     }
+    
 }

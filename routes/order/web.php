@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Client\OrderController;
+use App\Mail\OrderEmail;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 //Cart
 Route::prefix('order')->name('order.')->group(function(){
     Route::get('/',[OrderController::class,'index'])->name('showOrder');
+    Route::get('/sendmail',function(){
+        Mail::to('yuginovaniac@gmail.com')->send(new OrderEmail());
+    })->name('mail.order');
 })
 
 ?>

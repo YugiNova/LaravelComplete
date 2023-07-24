@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderEmail;
 use App\Models\Order;
+use App\Models\User;
 use App\Models\OrderItem;
 use App\Models\OrderPaymentMethod;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
@@ -91,13 +95,14 @@ class CartController extends Controller
     }
 
     public function placeOrder(Request $request){
+        
         $cart = session()->get('cart');
 
         $totalPrice = 0;
         foreach ($cart as $item) {
             $totalPrice += $item['qty'] * $item['price'];
         }
-
+    
         $order = Order::create([
             'user_id'=>Auth::user()->id,
             'address'=>$request->address,
@@ -105,8 +110,8 @@ class CartController extends Controller
             'note'=>$request->note,
             'status'=>'pending',
             'payment_method'=>$request->payment_method,
-            'subtotal'=>$request->$totalPrice,
-            'total'=>$request->$totalPrice
+            'subtotal'=>$totalPrice,
+            'total'=>$totalPrice
         ]);
 
         $orderPaymentMethod = OrderPaymentMethod::create([
@@ -116,10 +121,31 @@ class CartController extends Controller
             'status'=>'pending'
         ]);
 
-        foreach ($cart as $item) {
+        foreach ($cart as $key=>$item) {
             $cartItem = OrderItem::create([
-                
+                'order_id'=>$order->id,
+                'product_id'=>$key,
+                'product_qty'=>$item['qty'],
+                'product_name'=>$item['name'],
+                'product_price'=>$item['price']
             ]);
+        }
+
+        $user = User::find(Auth::user()->id);
+        $user->update(['phone'=>$request->phone]);
+        session()->put('cart',[]);
+        
+        Mail::to('yuginovaniac@gmail.com')->send(new OrderEmail($order,'user'));
+        Mail::to('yuginovaniac@gmail.com')->send(new OrderEmail($order,'admin'));
+
+        try {
+            DB::beginTransaction();
+
+    
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
         }
     }
 }

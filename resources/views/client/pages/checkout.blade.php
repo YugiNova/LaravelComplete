@@ -90,12 +90,18 @@
                                 <h4>Your Order</h4>
                                 <div class="checkout__order__products">Products <span>Total</span></div>
                                 <ul>
+                                    @php
+                                        $total = 0
+                                    @endphp
                                     @foreach ($cart as $item)
+                                        @php
+                                            $total += $item['price'] * $item['qty']
+                                        @endphp
                                         <li>{{ $item['name' ]}} <span>${{ number_format($item['price'] * $item['qty'])}}</span></li>
                                     @endforeach
                                 </ul>
-                                <div class="checkout__order__subtotal">Subtotal <span>$750.99</span></div>
-                                <div class="checkout__order__total">Total <span>$750.99</span></div>
+                                <div class="checkout__order__subtotal">Subtotal <span>${{number_format($total)}}</span></div>
+                                <div class="checkout__order__total">Total <span>${{number_format($total)}}</span></div>
                                 <div class="checkout__input__checkbox">
                                     <label for="acc-or">
                                         Create an account?
