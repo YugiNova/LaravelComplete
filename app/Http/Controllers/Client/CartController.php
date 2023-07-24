@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Events\OrderEvent;
 use App\Http\Controllers\Controller;
 use App\Mail\OrderEmail;
 use App\Models\Order;
@@ -138,10 +139,11 @@ class CartController extends Controller
         Mail::to('yuginovaniac@gmail.com')->send(new OrderEmail($order,'user'));
         Mail::to('yuginovaniac@gmail.com')->send(new OrderEmail($order,'admin'));
 
+        event(new OrderEvent($order));
+
         try {
             DB::beginTransaction();
 
-    
 
             DB::commit();
         } catch (\Exception $e) {
